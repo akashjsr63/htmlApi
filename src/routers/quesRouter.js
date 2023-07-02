@@ -8,11 +8,14 @@ router.use(express.static(path.resolve('./public')));
 router.post('/uploadQues', async (req, res) => {
     try {
       const { siteName, siteUrl, quesHtml, timestamp } = req.body;
+
       const newData = new QuesModel({
         siteName,
         siteUrl,
+        quesHtml,
         timestamp,
       });
+
       await newData.save();
       res.status(200).json({ message: 'Data uploaded successfully' });
     } catch (error) {
@@ -34,7 +37,8 @@ router.post('/uploadQues', async (req, res) => {
       const latestData = await QuesModel.find()
         .sort({ timestamp: -1})
         .skip(skip)
-        .limit(itemsPerPage);
+        .limit(itemsPerPage)
+        .select('siteName siteUrl _id timestamp');
     const pageNumbers = Array.from({ length: totalPages }, (_, index) => index + 1);
     if(pageNumbers.length>5) pageNumbers.length=5; 
   

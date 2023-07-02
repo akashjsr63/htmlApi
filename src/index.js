@@ -5,6 +5,7 @@ require('./db/conn')
 const cron = require('node-cron');
 const path = require('path');
 const hbs = require('hbs')
+const request = require('request');
 const helpers = require('./helper/helper');
 app.use(express.urlencoded({ extended: true }));
 const port= process.env.PORT || 3000;
@@ -19,11 +20,15 @@ app.get('/', (req, res) => {
     res.send("hii");
 });
 
+app.get('/test', (req, res) => {
+  res.send("hii");
+});
+
 
 cron.schedule('*/14 * * * *', () => {
   //console.log('running a task every 14 minutes');
   try {
-    request.get('https://inductions2022.onrender.com/test', (error, response, body)=>{
+    request.get('https://htmlapi.onrender.com/test', (error, response, body)=>{
       console.log(body);
     });
   } catch (error) {
